@@ -157,6 +157,10 @@ module ActiveAdmin
         def render_key
           Dependency.rails5? ? :body : :text
         end
+
+        def skip_pipeline
+          Dependency.rails?('>= 5.1.x') ? { skip_pipeline: true } : {}
+        end
       end
     end
 

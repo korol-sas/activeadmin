@@ -26,15 +26,16 @@ module ActiveAdmin
           within @head do
             insert_tag Arbre::HTML::Title, [title, render_or_call_method_or_proc_on(self, active_admin_namespace.site_title)].compact.join(" | ")
             active_admin_application.stylesheets.each do |style, options|
+              options.merge! Dependency.rails.skip_pipeline
               text_node stylesheet_link_tag(style, options).html_safe
             end
 
             active_admin_application.javascripts.each do |path|
-              text_node(javascript_include_tag(path))
+              text_node(javascript_include_tag(path, Dependency.rails.skip_pipeline))
             end
 
             if active_admin_namespace.favicon
-              text_node(favicon_link_tag(active_admin_namespace.favicon))
+              text_node(favicon_link_tag(active_admin_namespace.favicon, Dependency.rails.skip_pipeline))
             end
 
             active_admin_namespace.meta_tags.each do |name, content|
